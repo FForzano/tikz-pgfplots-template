@@ -1,0 +1,154 @@
+\documentclass[tikz]{standalone}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{pgfplots}
+\usepackage{tikz,pgf}
+\pgfplotsset{compat=1.18}
+
+% ulem package provides various types of underlining that can stretch between
+% words and be broken across lines.
+\usepackage[normalem]{ulem}
+
+% The package amsmath is part of the AMS-LaTeX distribution. It provides several
+% commands for displaying and formatting mathematical formulas. The package also
+% provides many environments for displaying equations and other mathematical
+% expressions. The package amssymb provides various useful mathematical symbols.
+% Finally, the package mathrsfs provides the \mathscr command, which allows you
+% to use the Ralph Smith Formal Script font in mathematical expressions.
+\usepackage{amsmath,amssymb, mathrsfs, amsthm}
+
+% xcolor package provides easy driver-independent access to several kinds of
+% colors, tints, shades, tones, and mixes of arbitrary colors by means of color
+% expressions like \color{red!50!green!20!blue}. colortbl package provides the
+% means to add color to LaTeX tables.
+\usepackage{xcolor}
+\usepackage{colortbl}
+
+% The package xspace provides a single command that looks at what comes after it
+% and decides whether to insert a space to replace one "eaten" by the TeX
+% command decoder. 
+\usepackage{scalerel}
+
+\usepackage{array}
+\usepackage{hhline}
+\usepackage{multirow}
+
+% Include TikZ libraries if needed
+% \usetikzlibrary{
+%     arrows,
+%     calc,
+%     angles,
+%     arrows.meta,
+%     decorations.text,
+%     shapes.symbols
+%     }
+
+% Include here your notation and custom commands
+% \input{notation.tex}
+
+
+\begin{document}	%	BEGIN DOCUMENT
+
+%%% Define your custom colors %%%
+\definecolor{steelblue}{RGB}{70, 130, 180}
+\definecolor{forestgreen}{RGB}{34, 139, 34}
+\definecolor{indianred}{RGB}{205, 92, 92}
+\definecolor{darkorange}{RGB}{255, 140, 0}
+\definecolor{mediumpurple}{RGB}{147, 112, 219}
+\definecolor{darkgray}{RGB}{105, 105, 105}
+
+
+% Figure with multiple plots with data from a CSV file (data.csv)
+% The data.csv file should have the following structure:
+% x, y1, y2, y3
+% 0, 1, 2, 3
+% 1, 2, 3, 4
+% 2, 3, 4, 5
+\begin{tikzpicture}
+
+    \begin{axis}[
+            % Width of the figure (if you set here, the font size will be the same as the document) 
+            width=\linewidth,
+            % Legend position and style
+            legend cell align={left},
+            legend style={
+                    fill opacity=0.8,
+                    draw opacity=1,
+                    text opacity=1,
+                    % Use a combination of anchor and at to position the legend
+                    % (Suggestions: you should avoid that the legend overlaps
+                    % with the plot and it is prettier if legends of subfigures
+                    % are in the same position)
+                    at={(0.02,0.98)},
+                    % Anchor is the point of the legend with respect to the position specified
+                    % with at (north east in this case)
+                    anchor=north west,
+                    draw=white!80!black
+                },
+            % x and y axis limits (suggestion: if you have subfigures, use the same limits)
+            ymin=0, ymax=30,
+            xmin=0, xmax=5,
+            xlabel={$x$},
+            ylabel={$y$},
+            yticklabel style={
+                    /pgf/number format/.cd, % The following options are for the number format
+                    fixed, % Use fixed point format
+                    fixed zerofill, % Add zero if no decimal
+                    precision=0, % Number of decimal places to which the number should be rounded
+                    /tikz/.cd, % The following options are for the tick labels
+                    align=right, % The alignment of the number
+                },
+            % Use the following lines if you want subtick between the major ticks
+            minor x tick num=4,
+            minor y tick num=4,
+        ]
+
+        \addplot [
+            steelblue,
+            line width=1pt,
+            % Comments the next lines if you don't want markers
+            mark=o,
+            mark size=2pt,
+            mark repeat=1
+        ] table [
+                col sep=comma,
+                x index=0,
+                y index=1,
+                header=true
+            ] {data.csv};
+        \addlegendentry{plot 1}
+
+        \addplot [
+            forestgreen,
+            line width=1pt,
+            % Comments the next lines if you don't want markers
+            mark=triangle,
+            mark size=2pt,
+            mark repeat=1
+        ] table [
+                col sep=comma,
+                x index=0,
+                y index=2,
+                header=true
+            ] {data.csv};
+        \addlegendentry{plot 2}
+
+        \addplot [
+            indianred,
+            line width=1pt,
+            % Comments the next lines if you don't want markers
+            mark=square,
+            mark size=2pt,
+            mark repeat=1
+        ] table [
+                col sep=comma,
+                x index=0,
+                y index=3,
+                header=true
+            ] {data.csv};
+        \addlegendentry{plot 3}
+    \end{axis}
+\end{tikzpicture}
+\end{document}	%	END DOCUMENT
